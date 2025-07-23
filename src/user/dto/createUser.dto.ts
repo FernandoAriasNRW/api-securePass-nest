@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/entity/base.entity";
-import { IsString, IsOptional, IsEmail, Min, MinLength, MaxLength, max, maxLength } from 'class-validator';
+import { IsString, IsOptional, IsEmail, MinLength, MaxLength } from 'class-validator';
 
 
 export class CreateUserDto extends BaseEntity {

@@ -21,6 +21,4 @@ export class UserEntity {
     @Column({ nullable: true })
     profileId?: string;
 
-    
-
 }
