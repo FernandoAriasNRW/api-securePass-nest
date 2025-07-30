@@ -1,9 +1,11 @@
-import { BaseEntity } from "src/common/entity/base.entity";
 import { IsString, IsOptional, IsEmail, MinLength, MaxLength } from 'class-validator';
+
+import { BaseEntity } from "src/common/entity/base.entity";
 
 
 export class CreateRecordDto extends BaseEntity {
 
+    
     @IsString()
     @MaxLength(25)
     name: string;

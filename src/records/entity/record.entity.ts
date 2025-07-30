@@ -1,7 +1,8 @@
+import { BaseEntity } from "src/common/entity/base.entity";
 import { Column, Entity } from "typeorm";
 
 @Entity()
-export class RecordEntity {
+export class Record extends BaseEntity {
     
     @Column({ nullable: false })
     name: string;

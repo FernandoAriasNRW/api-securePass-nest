@@ -1,5 +1,6 @@
-import { BaseEntity } from "src/common/entity/base.entity";
 import { IsString, IsOptional, MaxLength } from 'class-validator';
+
+import { BaseEntity } from "src/common/entity/base.entity";
 
 
 export class CreateFolderDto extends BaseEntity {

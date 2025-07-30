@@ -1,7 +1,9 @@
-import { Column, Entity } from "typeorm";
+import { BaseEntity } from "src/common/entity/base.entity";
+import { Vault } from "src/vault/entity/vault.entity";
+import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
-export class UserEntity {
+export class User extends BaseEntity {
     
     @Column({ nullable: false })
     name: string;
@@ -20,5 +22,7 @@ export class UserEntity {
 
     @Column({ nullable: true })
     profileId?: string;
+
+    
 
 }

@@ -1,7 +1,8 @@
+import { BaseEntity } from "src/common/entity/base.entity";
 import { Column, Entity } from "typeorm";
 
 @Entity()
-export class FolderEntity {
+export class Folder extends BaseEntity {
     
     @Column({ nullable: false })
     name: string;
