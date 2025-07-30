@@ -13,9 +13,6 @@ export class Folder extends BaseEntity {
     @Column({ nullable: true })
     description: string;
 
-    @ManyToOne(() => User, user => user.folders, { onDelete: 'CASCADE' })
-    user: User;
-
     @ManyToOne(() => Vault, vault => vault.folders, { onDelete: 'CASCADE' })
     vault: Vault;
 

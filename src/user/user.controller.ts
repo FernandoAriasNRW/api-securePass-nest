@@ -1,10 +1,14 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserService } from './user.service';
 import { UserUpdateDto } from './dto/updateUser.dto';
 import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BadResponseDto, SuccessResponseDto, SuccessUsersResponseDto } from 'src/utils/swagger/response.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+
 
 @ApiTags('Users')
 @ApiOkResponse({
@@ -20,6 +24,8 @@ export class UserController {
 
     constructor(private readonly userService: UserService) {}
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
     @ApiOkResponse({
         description: 'List of users retrieved successfully',
         type: SuccessUsersResponseDto,
@@ -30,11 +36,13 @@ export class UserController {
         return await this.userService.findAll(); // Assuming findAll method exists in UserService
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin', 'user')
     @Get(':id')
     async getUserById( @Param('id', ParseUUIDPipe) id: string) {
        return await this.userService.getUserById(id); // Placeholder for getting a user by ID
     }
-   
+
     @ApiBody({
        type: CreateUserDto,
     })
@@ -44,6 +52,8 @@ export class UserController {
         return await this.userService.create(createUserDto);
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin', 'user')
     @ApiBody({
         type: UserUpdateDto
     })
@@ -60,6 +70,8 @@ export class UserController {
         return await userUpdated; // Assuming update method returns the updated user
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
     @Delete(':id')
     async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
         // Logic to delete a user will go here

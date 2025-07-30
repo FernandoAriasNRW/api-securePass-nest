@@ -3,7 +3,7 @@ import { Folder } from "src/folder/entity/folder.entity";
 import { Vault } from "src/vault/entity/vault.entity";
 import { Record } from "src/records/entity/record.entity";
 import { Column, Entity, OneToMany } from "typeorm";
-
+import { UserRole } from '../../common/enums/roles.enum';
 @Entity()
 export class User extends BaseEntity {
     
@@ -25,11 +25,8 @@ export class User extends BaseEntity {
     @Column({ nullable: true })
     profileId?: string;
 
-    @OneToMany(() => Folder, folder => folder.user)
-    folders: Folder[];
-
-    @OneToMany(() => Record, record => record.user)
-    records: Record[];
+    @Column({ type: 'enum', enum: ['admin', 'user'], default: 'user' })
+    role: UserRole;
 
     @OneToMany(() => Vault, vault => vault.user)
     vaults: Vault[];

@@ -1,8 +1,15 @@
-import { Body, Controller, Delete, Get, NotFoundException, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { VaultService } from './vault.service';
 import { CreateVaultDto } from './dto/createVault.dto';
 import { VaultUpdateDto } from './dto/updateVault.dto';
+import { UserController } from 'src/user/user.controller';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin', 'user')
 @Controller('vault')
 export class VaultController {
 
@@ -24,9 +31,16 @@ export class VaultController {
     }
 
     @Post('')
-    async createVault(@Body() createVaultDto: CreateVaultDto) {
+    async createVault(@Body() createVaultDto: CreateVaultDto, @Req() req) {
+
+        const userId = req.user.userId
+
+        if (!userId) {
+            throw new NotFoundException('User not found');
+        }
+
         // Logic to create a vault will go here
-        return await this.vaultService.create(createVaultDto); // Assuming create method exists in VaultService
+         return await this.vaultService.create(createVaultDto, userId); // Assuming create method exists in VaultService
     }
 
     @Patch(':id')

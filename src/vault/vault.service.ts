@@ -77,9 +77,11 @@ export class VaultService {
         };
     }
 
-    async create(createVaultDto: CreateVaultDto) {
+    async create(createVaultDto: CreateVaultDto, userId: string) {
+
+    
         // Logic to save the vault to the database
-        const vault = this.vaultRepository.create(createVaultDto);
+        const vault = this.vaultRepository.create({...createVaultDto, userId});
 
         await this.vaultRepository.save(vault);
 

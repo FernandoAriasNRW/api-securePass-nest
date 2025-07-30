@@ -22,9 +22,6 @@ export class Record extends BaseEntity {
     @Column({ nullable: false })
     password: string;
 
-    @ManyToOne(() => User, user => user.records, { onDelete: 'CASCADE' })
-    user: User;
-
     @ManyToOne(() => Folder, folder => folder.records, { nullable: true, onDelete: 'CASCADE' })
     folder: Folder;
 

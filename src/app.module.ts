@@ -10,6 +10,10 @@ import { typeOrmConfig } from './config/typeorm.config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes the configuration available globally
+      envFilePath: '.env', // Path to the environment variables file
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

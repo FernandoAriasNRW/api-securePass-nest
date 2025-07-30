@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsEmail, MinLength, MaxLength } from 'class-validator';
+import { IsString, IsOptional, IsEmail, MinLength, MaxLength, IsIn } from 'class-validator';
 
 import { BaseEntity } from "src/common/entity/base.entity";
+import { UserRole } from '../../common/enums/roles.enum';
 
 
 export class CreateUserDto extends BaseEntity {
@@ -29,9 +30,8 @@ export class CreateUserDto extends BaseEntity {
 
     @ApiProperty({ required: false })
     @IsOptional()
-    @IsString()
-    @MaxLength(100)
-    role?: string;
+    @IsIn(['admin', 'user'])
+    role?: UserRole;
 
     @ApiProperty({ required: false })
     @IsOptional()

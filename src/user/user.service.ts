@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './entity/user.entity';
@@ -46,7 +47,16 @@ export class UserService {
     async create(createUserDto: CreateUserDto) {
         // Logic to save the user to the database or any other storage
         // This is a placeholder implementation
-        const user = this.userRepository.create(createUserDto);
+
+        const exists = await this.userRepository.findOne({ where: { email: createUserDto.email } });
+
+        if (exists) {
+        throw new ConflictException('El usuario ya existe');
+        }
+
+        const hashPasword = await bcrypt.hash(createUserDto.password, 10);
+
+        const user = this.userRepository.create({ ...createUserDto, password: hashPasword});
 
         await this.userRepository.save(user);
 
@@ -95,6 +105,17 @@ export class UserService {
             message: 'User deleted successfully',
             data: user,
         };
+    }
+
+    async findByEmail(email: string) {
+        // Logic to find a user by email
+        const user = await this.userRepository.findOne({ where: { email } });
+
+        if (!user) {
+            return null; // User not found
+        }
+
+        return user; // Return the found user
     }
 
 }
