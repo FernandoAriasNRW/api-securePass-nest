@@ -20,7 +20,8 @@ export class FolderService {
             // This is a placeholder implementation
 
             const folders = await this.folderRepository.find({
-                where: query 
+                where: query,
+                relations: ['records']
             });
 
             if (!folders || folders.length === 0) {
@@ -37,7 +38,9 @@ export class FolderService {
             };
         }
         
-        const folders = await this.folderRepository.find();
+        const folders = await this.folderRepository.find({
+            relations: ['records'] 
+        });
 
         if (!folders || folders.length === 0) {
             return {
@@ -55,7 +58,10 @@ export class FolderService {
 
     async getFolderById(id: string) {
         // Logic to retrieve a folder by ID
-        const folder = await this.folderRepository.findOne({ where: { id } });
+        const folder = await this.folderRepository.findOne({ 
+            where: { id },          
+            relations: ['records'],
+        });
 
         if (!folder) {
             return {
@@ -111,7 +117,7 @@ export class FolderService {
             return null; // Folder not found
         }
 
-        await this.folderRepository.remove(folder);
+        await this.folderRepository.softRemove(folder);
 
         return {
             statusCode: 200,

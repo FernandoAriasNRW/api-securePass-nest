@@ -1,4 +1,4 @@
 import { CreateVaultDto } from "./createVault.dto";
 
-export class UserUpdateDto implements Partial<CreateVaultDto> {
+export class VaultUpdateDto implements Partial<CreateVaultDto> {
 }
